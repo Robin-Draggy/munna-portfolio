@@ -1,0 +1,126 @@
+.layout {
+  display: grid;
+  grid-template-areas: "intro" "demo" "actions" "cue";
+  gap: 24px;
+  padding-block: 52px 32px;
+}
+
+.intro { grid-area: intro; }
+.actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-self: start;
+}
+
+.headline {
+  max-width: 10.5ch;
+  text-wrap: balance;
+}
+
+.demo {
+  grid-area: demo;
+  position: relative;
+  isolation: isolate;
+  align-self: center;
+  overflow: hidden;
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+.demoCaption {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--background);
+  color: var(--text-primary);
+  font: 500 10px/1.2 var(--font-geist-mono), monospace;
+  letter-spacing: .06em;
+}
+
+.demoDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.scene {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scrollCue {
+  grid-area: cue;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--text-muted);
+  font: 500 11px/1.2 var(--font-geist-mono), monospace;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.scrollCue:hover { color: var(--accent); }
+
+@media (width < 64rem) {
+  .layout { width: calc(100% - 48px); }
+  .headline { max-width: 13ch; }
+}
+
+@media (min-width: 64rem) {
+  .layout {
+    min-height: calc(90svh - var(--header-height));
+    grid-template-areas: "intro demo" "actions demo" "cue cue";
+    grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+    grid-template-rows: 1fr auto auto;
+    column-gap: clamp(24px, 3vw, 48px);
+    padding-block: 48px 22px;
+  }
+
+  .intro { align-self: end; }
+  .demoCaption { top: 20px; left: 20px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .demoCaption { animation: enter 500ms 100ms ease-out both; }
+}
+
+@media (min-width: 64rem) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .scene {
+    transform: translate(var(--scene-x, 0), var(--scene-y, 0)) scale(1.045);
+    transition: transform 180ms ease-out;
+  }
+
+  .farVehicle { --entry: translate(7px, -14px) scale(.91); }
+  .truck { --entry: translate(-12px, -19px) scale(.91); }
+  .nearVehicle { --entry: translate(14px, -22px) scale(.9); }
+
+  .farVehicle, .truck, .nearVehicle {
+    animation: travel 3.8s cubic-bezier(.25, .35, .28, 1) both;
+  }
+}
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes travel {
+  from { transform: var(--entry); }
+  to { transform: none; }
+}
