@@ -7,7 +7,6 @@ import { Container } from "@/components/ui/container";
 
 const navigation = [
   { id: "home", label: "Home" },
-  { id: "about", label: "About" },
   { id: "work", label: "Work" },
   { id: "expertise", label: "Expertise" },
   { id: "contact", label: "Contact" },

@@ -1,45 +1,40 @@
-import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Tag } from "@/components/ui/tag";
 import type { Project } from "@/data/projects";
-import { ProjectPreview } from "./project-preview";
+import { ProjectCTA } from "./project-cta";
+import { ProjectMedia } from "./project-media";
 
-export function ProjectResult({ result }: { result: NonNullable<Project["result"]> }) {
-  return (
-    <div className="mt-5 border-l border-accent/50 pl-4">
-      <p className="flex items-center gap-3 font-mono text-xl text-accent">
-        <span>{result.from}</span><span className="sr-only">to</span><ArrowRight size={16} aria-hidden="true" /><span>{result.to}</span>
-      </p>
-      <p className="mt-1 text-sm text-muted">{result.label}</p>
-    </div>
-  );
-}
-
-export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
+export function ProjectCard({ project }: { project: Project }) {
   const titleId = `project-${project.slug}`;
+  const wide = project.featured || project.videoId === null;
+  const sizes = wide
+    ? "(min-width: 1408px) 735px, (min-width: 1200px) 54vw, 94vw"
+    : "(min-width: 1408px) 650px, (min-width: 768px) 46vw, 94vw";
 
   return (
-    <Link
-      href={`/projects/${project.slug}`}
+    <article
       aria-labelledby={titleId}
-      className={`group grid h-full overflow-hidden rounded-[18px] border border-accent/25 bg-elevated hover:border-accent/60 motion-safe:transition-colors ${featured ? "lg:grid-cols-[3fr_2fr]" : "grid-rows-[auto_1fr]"}`}
+      className={`group grid h-full min-w-0 overflow-hidden rounded-[18px] border border-accent/25 bg-elevated hover:border-accent/60 focus-within:border-accent/60 motion-safe:transition-colors ${wide ? "min-[1200px]:grid-cols-[1.3fr_1fr]" : "grid-rows-[auto_1fr]"}`}
     >
-      <div className="relative min-w-0 overflow-hidden [&>div]:h-full [&_svg]:h-full [&_svg]:object-cover">
-        <ProjectPreview preview={project.preview} />
+      <div className={`min-w-0 bg-canvas ${wide ? "min-[1200px]:grid min-[1200px]:content-center min-[1200px]:border-r min-[1200px]:border-line min-[1200px]:bg-[radial-gradient(ellipse_at_center,var(--surface-elevated),var(--background)_78%)]" : ""}`}>
+        <ProjectMedia project={project} sizes={sizes} />
       </div>
-      <div className="flex flex-col justify-center p-5 sm:p-7">
-        <div className="flex items-start justify-between gap-3">
-          <h3 id={titleId} className={`font-semibold leading-tight tracking-tight ${featured ? "text-2xl lg:text-3xl" : "text-xl lg:text-2xl"}`}>
-            {project.name}
-          </h3>
-          <ArrowUpRight size={19} aria-hidden="true" className="mt-1 shrink-0 text-accent motion-safe:transition-transform motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-focus-visible:translate-x-0.5 motion-safe:group-focus-visible:-translate-y-0.5" />
+      <div className={`flex min-w-0 flex-col p-5 sm:p-7 ${wide ? "min-[1200px]:justify-center min-[1200px]:p-8" : ""}`}>
+        <p className="mb-3 font-mono text-[11px] tracking-wider text-accent uppercase">
+          {project.id} / {project.category}{project.videoId ? " / VIDEO DEMO" : ""}
+        </p>
+        <h3 id={titleId} className={`font-semibold leading-tight tracking-tight ${project.featured ? "text-3xl lg:text-4xl" : "text-2xl lg:text-3xl"}`}>
+          {project.title}
+        </h3>
+        <div className="mt-4 max-w-[68ch] space-y-3 leading-relaxed text-muted">
+          {project.description.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
-        <p className="mt-3 text-muted">{project.description}</p>
-        {project.result && <ProjectResult result={project.result} />}
         <ul aria-label="Technologies" className="mt-5 flex flex-wrap gap-2">
           {project.technologies.map((technology) => <li key={technology}><Tag>{technology}</Tag></li>)}
         </ul>
+        <div className="mt-auto pt-5">
+          <ProjectCTA project={project} caseStudy />
+        </div>
       </div>
-    </Link>
+    </article>
   );
 }

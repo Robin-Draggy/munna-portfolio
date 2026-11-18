@@ -11,7 +11,7 @@ export function Experience() {
       <Container className="design-grid items-start gap-y-8">
         <div className="col-span-4 lg:col-span-5">
           <p className="mb-5 font-mono text-xs font-medium tracking-[0.15em] text-accent">
-            05 / PROFESSIONAL JOURNEY
+            03 / PROFESSIONAL JOURNEY
           </p>
           <SectionHeading data-motion-heading id="experience-heading" className="max-w-[15ch] text-balance">
             From Research to Real-World Systems.

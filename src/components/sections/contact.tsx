@@ -15,7 +15,7 @@ export function Contact() {
           <div className={styles.particles} data-motion-particles aria-hidden="true" />
           <div className="relative">
             <p className="mb-5 font-mono text-xs font-medium tracking-[0.15em] text-accent">
-              06 / ESTABLISH CONNECTION
+              05 / ESTABLISH CONNECTION
             </p>
             <SectionHeading data-motion-heading id="contact-heading" className={styles.heading}>
               Have a Challenge?

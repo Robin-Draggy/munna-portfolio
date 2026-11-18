@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) notFound();
 
   return {
-    title: project.name,
-    description: project.description,
+    title: project.title,
+    description: project.description[0],
     openGraph: {
       type: "website",
-      title: `${project.name} | ${portfolio.name}`,
-      description: project.description,
+      title: `${project.title} | ${portfolio.name}`,
+      description: project.description[0],
     },
   };
 }

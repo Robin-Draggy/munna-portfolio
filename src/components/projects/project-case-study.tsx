@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Tag } from "@/components/ui/tag";
 import type { Project } from "@/data/projects";
-import { ProjectResult } from "./project-card";
-import { ProjectPreview } from "./project-preview";
+import { ProjectCTA } from "./project-cta";
+import { ProjectMedia } from "./project-media";
 import { ProjectProcess } from "./project-process";
 
 function ProjectNeighbor({ project, direction }: { project: Project; direction: "Previous" | "Next" }) {
@@ -14,7 +14,7 @@ function ProjectNeighbor({ project, direction }: { project: Project; direction: 
     <Link href={`/projects/${project.slug}`} className="flex items-center justify-between gap-4 rounded-xl border border-line bg-panel p-5 hover:border-accent">
       <div>
         <span className="block font-mono text-xs text-accent">{direction} project</span>
-        <span className="mt-1 block font-semibold">{project.name}</span>
+        <span className="mt-1 block font-semibold">{project.title}</span>
       </div>
       <Icon size={18} className="shrink-0 text-accent" aria-hidden="true" />
     </Link>
@@ -32,12 +32,15 @@ export function ProjectCaseStudy({ project, previous, next }: { project: Project
         <article className="mt-7" aria-labelledby="project-title">
           <header>
             <p className="font-mono text-xs font-medium tracking-[0.15em] text-accent uppercase">{project.category}</p>
-            <h1 id="project-title" className="section-heading mt-4 max-w-[22ch] font-semibold text-balance">{project.name}</h1>
-            <p className="mt-5 max-w-[65ch] text-muted">{project.description}</p>
+            <h1 id="project-title" className="section-heading mt-4 max-w-[22ch] font-semibold text-balance">{project.title}</h1>
+            <div className="mt-5 max-w-[65ch] space-y-3 text-muted">
+              {project.description.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            </div>
+            {project.externalLink && <div className="mt-5"><ProjectCTA project={project} /></div>}
           </header>
-          <div className="mt-9 overflow-hidden rounded-[18px] border border-line lg:mt-12">
-            <ProjectPreview preview={project.preview} alt={project.previewAlt} />
-          </div>
+          <section aria-label={project.videoId ? "Project demonstration" : "Project visualization"} className="mt-9 max-w-5xl overflow-hidden rounded-[18px] border border-line lg:mt-12">
+            <ProjectMedia project={project} sizes="(min-width: 1120px) 1024px, 94vw" />
+          </section>
           <div className="mt-12 space-y-10 lg:mt-16 lg:space-y-14">
             <section aria-labelledby="project-problem">
               <h2 id="project-problem" className="text-2xl font-semibold tracking-tight lg:text-3xl">Problem</h2>
@@ -47,16 +50,6 @@ export function ProjectCaseStudy({ project, previous, next }: { project: Project
               <h2 id="project-process" className="text-2xl font-semibold tracking-tight lg:text-3xl">Technical process</h2>
               <ProjectProcess steps={project.process} />
             </section>
-            <section aria-labelledby="project-contribution">
-              <h2 id="project-contribution" className="text-2xl font-semibold tracking-tight lg:text-3xl">Engineering contribution</h2>
-              <p className="mt-3 max-w-[65ch] text-muted">{project.contribution}</p>
-            </section>
-            {project.result && (
-              <section aria-labelledby="project-outcome">
-                <h2 id="project-outcome" className="text-2xl font-semibold tracking-tight lg:text-3xl">Reported outcome</h2>
-                <ProjectResult result={project.result} />
-              </section>
-            )}
             <section aria-labelledby="project-stack">
               <h2 id="project-stack" className="text-2xl font-semibold tracking-tight lg:text-3xl">Technology stack</h2>
               <ul className="mt-4 flex flex-wrap gap-2">

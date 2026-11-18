@@ -48,22 +48,32 @@ export function HomeMotion({ children }: { children: ReactNode }) {
 
       context.add(() => {
         if (!window.location.hash && window.scrollY <= 8) {
-          const heroText = elements("[data-motion-hero-text]");
-          const heroScene = elements("[data-motion-hero-scene]");
           gsap.timeline({ defaults: { ease: "power2.out" } })
-            .from(heroText, { y: 24, opacity: 0, duration: 0.7, stagger: 0.11 }, 0)
-            .from(heroScene, { scale: 0.985, opacity: 0.55, duration: 0.65 }, 0.08);
+            .from(elements("[data-motion-hero-label]"), { opacity: 0, duration: 0.3 }, 0)
+            .from(elements("[data-motion-hero-name]"), { y: 14, opacity: 0, duration: 0.5 }, 0.07)
+            .from(elements("[data-motion-hero-text]"), { y: 19, opacity: 0, duration: 0.56, stagger: 0.09 }, 0.15)
+            .from(elements("[data-motion-hero-experience]"), { opacity: 0, duration: 0.4 }, 0.27)
+            .from(elements("[data-motion-hero-action]"), { y: 8, opacity: 0, duration: 0.4, stagger: 0.065 }, 0.32)
+            .from(elements("[data-motion-hero-social]"), { y: 7, opacity: 0, duration: 0.3, stagger: 0.045 }, 0.43)
+            .from(elements("[data-motion-hero-portrait]"), {
+              clipPath: "inset(10% 0% 16% 0%)", opacity: 0.4, duration: 0.68,
+            }, 0.18);
+        }
+
+        const hero = root.querySelector("#home");
+        if (hero && desktop.matches) {
+          gsap.to(elements("[data-motion-hero-scroll]"), {
+            opacity: 0.86,
+            ease: "none",
+            scrollTrigger: { trigger: hero, start: "bottom 93%", end: "bottom 42%", scrub: true },
+          });
         }
 
         elements("[data-motion-heading]").forEach((target) => reveal(target, { y: 24, opacity: 0 }));
-        elements("[data-motion-copy]").forEach((target) => reveal(target, { y: 14, opacity: 0, delay: 0.08 }));
-        elements("[data-motion-portrait]").forEach((target) => reveal(target, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.7 }));
         elements("[data-motion-project]").forEach((target, index) => {
           reveal(target, { y: 20, opacity: 0.25, delay: desktop.matches ? (index % 2) * 0.08 : 0 });
         });
-        elements("[data-motion-highlight]").forEach((target, index) => {
-          reveal(target, { y: 12, opacity: 0.35, delay: (index % 2) * 0.07 });
-        });
+
 
         const rail = root.querySelector<HTMLElement>("[data-motion-rail]");
         if (rail) {
