@@ -18,7 +18,7 @@ interface ProjectDetails {
 
 export type Project = ProjectDetails & (
   | { videoId: string; videoTitle: string; image: ProjectImage }
-  | { videoId: null; videoTitle: null; image: null }
+  | { videoId: null; videoTitle: null; image: ProjectImage | null }
 ) & (
   | { externalLink: string; externalLabel: string }
   | { externalLink: null; externalLabel: null }
@@ -108,7 +108,11 @@ export const secondaryProjects: readonly Project[] = [
     technologies: ["Conversational AI", "Chatbot", "API Integration", "Frontend Development"],
     videoId: null,
     videoTitle: null,
-    image: null,
+    image: {
+      src: "/images/projects/preimer-bank-poster.png",
+      alt: "Chatbot demo thumbnail showing a conversation interface with banking questions and answers.",
+      framing: "office",
+    },
     externalLink: "https://chatbot.betopialimited.com/",
     externalLabel: "Explore Live Chatbot",
     category: "Conversational AI",
